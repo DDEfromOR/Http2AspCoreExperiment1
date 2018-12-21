@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Http2AspCoreExperiment1
 {
@@ -19,6 +12,7 @@ namespace Http2AspCoreExperiment1
             CreateWebHostBuilder(args).Build().Run();
         }
 
+        //ConfigureKestrel now allows setting listen options to enable HTTP 2.0
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureKestrel(options =>
@@ -26,6 +20,11 @@ namespace Http2AspCoreExperiment1
                     options.Listen(IPAddress.Any, 8080, listenOptions =>
                     {
                         listenOptions.Protocols = HttpProtocols.Http2;
+
+                        //If running locally create a localhost cert to input below,
+                        //otherwise the UseHttps line below can be removed or commented
+                        //out if running in an App Service, as the generic Azure cert will be
+                        //subbed in and IIS will handle the heavy lifting
                         listenOptions.UseHttps("someCert.pem", "password123");
                     });
                 })
