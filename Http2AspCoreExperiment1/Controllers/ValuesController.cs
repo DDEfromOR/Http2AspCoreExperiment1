@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Http2AspCoreExperiment1.Controllers
@@ -40,11 +37,6 @@ namespace Http2AspCoreExperiment1.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-        }
-
-        private void ConnectToBackServer()
-        {
-
         }
     }
 }

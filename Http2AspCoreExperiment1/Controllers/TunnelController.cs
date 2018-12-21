@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO.Pipelines;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Mvc;
@@ -12,38 +13,30 @@ namespace Http2AspCoreExperiment1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ChatController : ControllerBase
+    public class TunnelController : ControllerBase
     {
         // GET: api/Chat
         [HttpGet]
-        public IEnumerable<string> Get()
+        public HttpResponseMessage Get()
         {
-            return new string[] { "value1", "value2" };
+            return PassItAlong();
         }
 
-        // GET: api/Chat/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public static HttpResponseMessage PassItAlong()
         {
-            return "value";
-        }
+            //await may not play well with 500s, so making it a bit dumber for now
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new System.Uri("Read the endpoint from appsettings here.");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept
+                    .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-        // POST: api/Chat
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+                var response = client.GetAsync("api/values");
+                response.Wait();
 
-        // PUT: api/Chat/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+                return response.Result;
+            }
         }
 
         //private void DoSomething(Http2Stream http2Stream)
