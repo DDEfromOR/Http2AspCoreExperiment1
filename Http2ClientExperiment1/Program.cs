@@ -8,7 +8,7 @@ namespace Http2ClientExperiment1
     {
         static void Main(string[] args)
         {
-            string url = "https://http2aspcoreexperiment120181219030212.azurewebsites.net/api/values";
+            string url = "https://www.some.service.to.ping";
             int requestCount = 5;
 
             using (var http2Client = new HttpClient())
@@ -39,6 +39,7 @@ namespace Http2ClientExperiment1
 
         private static void PrintResult(HttpResponseMessage response)
         {
+            //Remove the Response Body print if hitting an actual page
             Console.WriteLine("-- Result -- \n" +
                 $"Status: {response.StatusCode} \n" +
                 $"Request HTTP Protocol used: {response.RequestMessage.Version} \n" +
