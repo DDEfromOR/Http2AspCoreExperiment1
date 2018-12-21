@@ -26,7 +26,7 @@ namespace Http2AspCoreExperiment1
                     options.Listen(IPAddress.Any, 8080, listenOptions =>
                     {
                         listenOptions.Protocols = HttpProtocols.Http2;
-                        listenOptions.UseHttps("somecert.pfx", "password123");
+                        listenOptions.UseHttps("someCert.pem", "password123");
                     });
                 })
                 .UseStartup<Startup>();

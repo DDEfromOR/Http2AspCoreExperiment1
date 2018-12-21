@@ -41,5 +41,10 @@ namespace Http2AspCoreExperiment1.Controllers
         public void Delete(int id)
         {
         }
+
+        private void ConnectToBackServer()
+        {
+
+        }
     }
 }
